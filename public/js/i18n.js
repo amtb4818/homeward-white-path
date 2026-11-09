@@ -6,7 +6,6 @@ export const LANGS = [
   ['ja', '日本語'],
   ['ko', '한국어'],
   ['vi', 'Tiếng Việt'],
-  ['th', 'ไทย'],
   ['en', 'English'],
 ];
 export const BCP = { zh: 'zh-Hant', yue: 'zh-HK', ja: 'ja', ko: 'ko', vi: 'vi', th: 'th', en: 'en' };
@@ -20,13 +19,13 @@ export function guessLang() {
   for (const l of ls) {
     if (l.startsWith('yue')) return 'yue';
     if (l.startsWith('zh')) return 'zh';
-    for (const c of ['ja', 'ko', 'vi', 'th', 'en']) if (l.startsWith(c)) return c;
+    for (const c of ['ja', 'ko', 'vi', 'en']) if (l.startsWith(c)) return c;
   }
   return 'en';
 }
 
 export async function initLang(code) {
-  LANG = LANGS.some(l => l[0] === code) ? code : 'zh';
+  LANG = LANGS.some(l => l[0] === code) ? code : guessLang();   // 已撤下的語言（如泰語）改用手機語言重新判斷
   D = {};
   if (LANG !== 'zh') {
     try { D = (await import(`./lang/${LANG}.js`)).default || {}; } catch (e) { D = {}; }
