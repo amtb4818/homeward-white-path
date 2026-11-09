@@ -3,6 +3,7 @@
 import { TILE } from '../engine.js';
 import { traveler } from '../draw.js';
 import { dialog, hint, toast, grant, callText } from '../ui.js';
+import { t as tr } from '../i18n.js';
 import * as A from '../audio.js';
 
 const COLS = 15, ROWS = 26;
@@ -55,7 +56,7 @@ export function createCh5() {
         await dialog(b.lines.map(text => ({ name: b.name, text, sutra: b.id === 'jl' && text.startsWith('其土') })));
         if (first) {
           st.found.push(b.id);
-          toast(`找到法鳥 ${st.found.length}／6`);
+          toast(tr('找到法鳥 {n}／6', { n: st.found.length }));
           if (b.id === 'gm') E.grantSutra && E.grantSutra('ch5a');
           if (st.found.length === 6) dawn();
         }
@@ -162,7 +163,7 @@ export function createCh5() {
     for (let i = 0; i < Math.min(8, f.got); i++) flower(c, f.x - 10 + (i % 4) * 7, by - 5 - Math.floor(i / 4) * 4, 3.2, i, (i * 0.37) % 1);
     // 數量
     c.font = 'bold 16px "Noto Serif TC", serif'; c.textAlign = 'center'; c.fillStyle = '#6b3d00';
-    c.fillText(`衣裓中的妙華　${f.got}`, W / 2, H - 200);
+    c.fillText(tr('衣裓中的妙華　{n}', { n: f.got }), W / 2, H - 200);
     if (!f.offering) {
       c.fillStyle = 'rgba(107,61,0,.25)'; c.fillRect(W / 2 - 80, H - 190, 160, 5);
       c.fillStyle = '#c98a2b'; c.fillRect(W / 2 - 80, H - 190, 160 * Math.min(1, t / FLY_T), 5);

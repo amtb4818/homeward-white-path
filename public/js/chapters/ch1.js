@@ -2,6 +2,7 @@
 // 「思惟之林」中散落著石碑，黑暗裡看不清碑文；稱名的佛光照到，碑文才顯現。
 import { TILE } from '../engine.js';
 import { dialog, hint, toast, openCard, grant } from '../ui.js';
+import { t as tr, q } from '../i18n.js';
 import * as A from '../audio.js';
 
 const MAP = [
@@ -49,9 +50,9 @@ const VOWS = [
 ];
 const LORE = [
   { id: 'lore1', tx: 2, ty: 9, title: '五劫思惟',
-    body: '<p>法藏比丘在世自在王如來前發起大願，</p><p class="quote">具足五劫，思惟攝取莊嚴佛國清淨之行。<small>《佛說無量壽經》</small></p><p>這片林子，就叫「思惟之林」。</p>' },
+    body: () => `<p>${tr('法藏比丘在世自在王如來前發起大願，')}</p>${q('具足五劫，思惟攝取莊嚴佛國清淨之行。', '《佛說無量壽經》')}<p>${tr('這片林子，就叫「思惟之林」。')}</p>` },
   { id: 'lore2', tx: 10, ty: 9, title: '四十八願',
-    body: '<p>法藏比丘為了救度十方眾生，發下四十八大願。</p><p>這些願的最後都說：「不取正覺」——若做不到，我就不成佛。</p><p>如今法藏比丘已經成佛，就是阿彌陀佛。</p>' },
+    body: () => ['法藏比丘為了救度十方眾生，發下四十八大願。', '這些願的最後都說：「不取正覺」——若做不到，我就不成佛。', '如今法藏比丘已經成佛，就是阿彌陀佛。'].map(s => `<p>${tr(s)}</p>`).join('') },
 ];
 
 export function createCh1() {
@@ -79,7 +80,7 @@ export function createCh1() {
     ents.push({
       id: l.id, x, y, h: 30, block: [[l.tx, l.ty]],
       draw: c => plaque(c, x, y),
-      interact: () => openCard(`<div class="tag">林 中 刻 文</div><h3>${l.title}</h3>${l.body}<div class="row"><button class="btn ghost" data-close="ok">好</button></div>`),
+      interact: () => openCard(`<div class="tag">${tr('林 中 刻 文')}</div><h3>${tr(l.title)}</h3>${l.body()}<div class="row"><button class="btn ghost" data-close="ok">${tr('好')}</button></div>`),
     });
   }
   const bx = 6.5 * TILE, by = 2.9 * TILE;
@@ -96,13 +97,13 @@ export function createCh1() {
   async function readVow(v) {
     const first = !st.read.includes(v.id);
     A.sfx('open');
-    await openCard(`<div class="tag">${v.no}・${v.title}</div><h3>${v.no}</h3>
-      <p class="quote">${v.text}<small>《佛說無量壽經》</small></p>
-      <p>${v.plain}</p>
-      <div class="row"><button class="btn" data-close="ok">南無阿彌陀佛</button></div>`);
+    await openCard(`<div class="tag">${tr(v.no)}・${tr(v.title)}</div><h3>${tr(v.no)}</h3>
+      ${q(v.text, '《佛說無量壽經》')}
+      <p>${tr(v.plain)}</p>
+      <div class="row"><button class="btn" data-close="ok">${tr('南無阿彌陀佛')}</button></div>`);
     if (first) {
       st.read.push(v.id);
-      toast(`願碑 ${st.read.length}／4`);
+      toast(tr('願碑 {n}／4', { n: st.read.length }));
       if (st.read.length === 4) openThicket();
     }
   }
@@ -118,12 +119,12 @@ export function createCh1() {
     st.done = true;
     await dialog([{ text: '這是四十八願之中，最根本的一願——' }]);
     A.sfx('grant');
-    await openCard(`<div class="tag">第 十 八 願・念 佛 往 生 願</div><h3>第十八願</h3>
-      <p class="quote">設我得佛，十方眾生，至心信樂，欲生我國，乃至十念，若不生者，不取正覺。唯除五逆，誹謗正法。<small>《佛說無量壽經》</small></p>
-      <p>善導大師在《往生禮讚》中這樣引述：</p>
-      <p class="quote">若我成佛，十方眾生，稱我名號，下至十聲，若不生者，不取正覺。<small>善導大師《往生禮讚偈》</small></p>
-      <p>不論是誰，只要稱念這句名號，阿彌陀佛就必定救度。</p>
-      <div class="row"><button class="btn" data-close="ok">南無阿彌陀佛</button></div>`);
+    await openCard(`<div class="tag">${tr('第 十 八 願・念 佛 往 生 願')}</div><h3>${tr('第十八願')}</h3>
+      ${q('設我得佛，十方眾生，至心信樂，欲生我國，乃至十念，若不生者，不取正覺。唯除五逆，誹謗正法。', '《佛說無量壽經》')}
+      <p>${tr('善導大師在《往生禮讚》中這樣引述：')}</p>
+      ${q('若我成佛，十方眾生，稱我名號，下至十聲，若不生者，不取正覺。', '善導大師《往生禮讚偈》')}
+      <p>${tr('不論是誰，只要稱念這句名號，阿彌陀佛就必定救度。')}</p>
+      <div class="row"><button class="btn" data-close="ok">${tr('南無阿彌陀佛')}</button></div>`);
     await grant(['zhihui'], 'ch1');
     E.complete('ch1', ['zhihui'], ['ch1']);
   }
@@ -211,7 +212,7 @@ function stele(c, x, y, s, lit, read, t, label) {
     if (label) {
       c.font = 'bold 9px "Noto Serif TC", serif'; c.textAlign = 'center';
       c.fillStyle = read ? '#fff6d6' : '#ffe9a8'; c.strokeStyle = 'rgba(60,30,0,.8)'; c.lineWidth = 2.5;
-      c.strokeText(label, 0, -48); c.fillText(label, 0, -48);
+      const lb = tr(label); c.strokeText(lb, 0, -48); c.fillText(lb, 0, -48);
     }
   } else {
     c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 1;

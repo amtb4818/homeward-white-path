@@ -288,3 +288,34 @@ canvas#game { position: absolute; inset: 0; width: 100%; height: 100%; display: 
   box-shadow: inset 0 0 0 1.5px rgba(255,240,220,.55);
 }
 #dlg-next { color: #8a5a32; }
+
+/* ---------- 多語系 ---------- */
+:root {
+  --serif: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PMingLiU", "MingLiU", "Noto Serif JP", "Noto Serif KR", "Noto Serif Thai", serif;
+  --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", "Noto Sans JP", "Noto Sans KR", "Noto Sans Thai", "Leelawadee UI", "Malgun Gothic", "Yu Gothic", sans-serif;
+}
+html[lang="ja"] { --serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif TC", serif; --sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; }
+html[lang="ko"] { --serif: "Noto Serif KR", "AppleMyungjo", "Batang", "Nanum Myeongjo", serif; --sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+html[lang="th"] { --serif: "Noto Serif Thai", "Thonburi", "Leelawadee UI", "Noto Serif TC", serif; --sans: "Noto Sans Thai", "Thonburi", "Leelawadee UI", sans-serif; }
+[lang="zh-Hant"] { font-family: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PMingLiU", serif; }
+.gloss { display: block; margin-top: 6px; font-family: var(--sans); font-size: calc(var(--fs) - 3px); line-height: 1.5; color: #6a5236; }
+#card .quote .gloss { border-top: 1px dashed rgba(160,110,50,.4); padding-top: 6px; }
+#card .item .gloss { margin-top: 2px; font-size: 13px; }
+#dlg-gloss { font-family: var(--sans); font-size: calc(var(--fs) - 3px); line-height: 1.45; color: #6a5236; margin-top: 2px; }
+#dlg-gloss:empty { display: none; }
+.title-verse .gloss { font-size: 13px; color: inherit; opacity: .85; }
+.lang-btn { margin-top: 14px; background: rgba(255,255,255,.12); color: inherit; border: 1px solid rgba(255,230,170,.5); border-radius: 18px; padding: 6px 16px; font-size: 15px; }
+#card .seg[data-key="lang"] { flex-wrap: wrap; }
+html:not([lang^="zh"]) #card .tag, html:not([lang^="zh"]) #card h3 { letter-spacing: .02em; }
+html[data-lang="en"] #btn-chant span, html[data-lang="vi"] #btn-chant span, html[data-lang="th"] #btn-chant span { font-size: 11px; letter-spacing: 0; }
+html[data-lang="ko"] #btn-chant span { font-size: 14px; }
+html[data-lang="en"] .ch-card .num, html[data-lang="vi"] .ch-card .num, html[data-lang="th"] .ch-card .num, html[data-lang="ko"] .ch-card .num { font-size: 15px; }
+#overlay { z-index: 50; }   /* 卡片要蓋過標題、章節畫面（語言、設定） */
+[lang="ko"] { font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "Nanum Gothic", sans-serif; }
+[lang="ja"] { font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; }
+[lang="th"] { font-family: "Noto Sans Thai", "Thonburi", "Leelawadee UI", "Tahoma", sans-serif; }
+html[lang="ko"] body, html[lang="ja"] body, html[lang="th"] body { font-family: var(--sans); }
+html:not([lang^="zh"]) .big-btn { letter-spacing: .03em; white-space: nowrap; font-size: 22px; padding-left: 28px; padding-right: 28px; }
+html:not([lang^="zh"]) .screen header h2 { letter-spacing: .03em; }
+html:not([lang^="zh"]) #chapter-screen h2 { letter-spacing: .03em; }
+html:not([lang^="zh"]) .ch-card b { padding-right: 0; margin-top: 16px; }

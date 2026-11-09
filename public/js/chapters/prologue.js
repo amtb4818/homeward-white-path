@@ -2,6 +2,7 @@
 import { TILE } from '../engine.js';
 import { chibi, vaidehi, buddha } from '../draw.js';
 import { dialog, hint, toast, grant, openCard } from '../ui.js';
+import { t as tr, q } from '../i18n.js';
 import * as A from '../audio.js';
 
 export const MAP = [
@@ -62,7 +63,7 @@ export function createPrologue() {
         await dialog(lines.map(t => ({ name: opts.name, text: t })));
         if (first) {
           st.heard.push(id);
-          await dialog([{ text: `（你把他的心事放在心上。${st.heard.length}／4）` }]);
+          await dialog([{ text: tr('（你把他的心事放在心上。{n}／4）', { n: st.heard.length }) }]);
           if (st.heard.length === 4) openGate();
         }
       },
@@ -106,7 +107,7 @@ export function createPrologue() {
         ]);
         hint('走進光臺中的小門，看看諸佛的國土。', 5000);
       } else if (st.stage === 1) {
-        await dialog([{ name: '韋提希夫人', text: `我們一起看看諸佛的國土吧。（${st.seen.length}／3）` }]);
+        await dialog([{ name: '韋提希夫人', text: tr('我們一起看看諸佛的國土吧。（{n}／3）', { n: st.seen.length }) }]);
       } else {
         await dialog([{ name: '韋提希夫人', text: '走吧，往西方去，往阿彌陀佛那裡去。' }]);
       }
@@ -142,12 +143,12 @@ export function createPrologue() {
     A.sfx('portal');
     st.seen.push(l.id);
     await openCard(`
-      <div class="tag">光 臺 所 現</div>
+      <div class="tag">${tr('光 臺 所 現')}</div>
       <div style="height:110px;border-radius:12px;margin:6px 0 10px;background:radial-gradient(circle at 50% 60%, #fffbe8, ${l.color} 45%, #6a5a7a 120%)"></div>
-      <h3>${l.name}</h3>
-      <p class="quote">${l.text}<small>《佛說觀無量壽佛經》</small></p>
-      <p style="text-align:center">${l.note}</p>
-      <div class="row"><button class="btn ghost" data-close="ok">回到光臺</button></div>`);
+      <h3>${tr(l.name)}</h3>
+      ${q(l.text, '《佛說觀無量壽佛經》')}
+      <p style="text-align:center">${tr(l.note)}</p>
+      <div class="row"><button class="btn ghost" data-close="ok">${tr('回到光臺')}</button></div>`);
     if (st.seen.length === 3) {
       await dialog([
         { name: '韋提希夫人', text: '世尊！是諸佛土，雖復清淨，皆有光明，', sutra: true },
@@ -224,7 +225,7 @@ export function createPrologue() {
       }
       // 宮門未開時靠近
       if (!st.gate && p.y < 7.9 * TILE && Math.abs(p.x - 7.5 * TILE) < TILE && !this._gateHint) {
-        this._gateHint = true; hint(`宮門深鎖。先去聽聽城中人們的心事吧（${st.heard.length}／4）。`, 4000);
+        this._gateHint = true; hint(tr('宮門深鎖。先去聽聽城中人們的心事吧（{n}／4）。', { n: st.heard.length }), 4000);
         setTimeout(() => { this._gateHint = false; }, 6000);
       }
     },

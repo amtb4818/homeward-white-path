@@ -1,6 +1,7 @@
 // 遊戲引擎：地圖、移動、碰撞、尋路、稱名光波、小燈籠、黑霧、光影
 import * as A from './audio.js';
 import { ui, dialogOpen, dialogNext } from './ui.js';
+import { t as tr } from './i18n.js';
 import { traveler, fogPuff } from './draw.js';
 
 export const TILE = 36;
@@ -176,7 +177,7 @@ export class Engine {
     this.waves.push({ x: p.x, y: p.y - 12, t: 0, R, top: this.cam.y - 10 });
     p.lantern = 1;
     p.glow = p.glowMax = this.level.glowTime ? this.level.glowTime(this) : 3;
-    this.texts.push({ x: p.x, y: p.y - 46, t: 0, s: '南無阿彌陀佛' });
+    this.texts.push({ x: p.x, y: p.y - 46, t: 0, s: tr('南無阿彌陀佛') });
     this.hooks.chant();
     this.level.onChant && this.level.onChant(this);
   }

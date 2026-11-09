@@ -6,6 +6,7 @@ import { TILE } from '../engine.js';
 import { chibi } from '../draw.js';
 import { dialog, hint, toast, grant } from '../ui.js';
 import * as A from '../audio.js';
+import { t as tr } from '../i18n.js';
 
 const ROWS = 40, COLS = 13;
 const FOOT = 34;          // 山腳／岸邊的第一列
@@ -70,7 +71,7 @@ export function createCh2() {
     A.sfx('bump'); flash = 1;
     await dialog([{ text: reason }]);
     p.x = 3.5 * TILE; p.y = (FOOT + 1.8) * TILE; p.facing = 'up'; p.lantern = 0.6; E.snapCam();
-    toast(`被擋回山腳（第 ${st.tries} 次）`);
+    toast(tr('被擋回山腳（第 {n} 次）', { n: st.tries }));
     if (st.tries === 3) hint('山腳的修行人好像有話要說。<br>或者……看看右邊的大河？', 6000);
   }
 

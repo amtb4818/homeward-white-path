@@ -1,8 +1,9 @@
 // 離線快取：第二次開啟不需網路
-const CACHE = 'homeward-v11';
+const CACHE = 'homeward-v12';
 const FILES = [
   './', 'index.html', 'css/style.css', 'manifest.webmanifest',
-  'js/main.js', 'js/engine.js', 'js/ui.js', 'js/audio.js', 'js/save.js', 'js/data.js', 'js/draw.js',
+  'js/main.js', 'js/engine.js', 'js/ui.js', 'js/audio.js', 'js/save.js', 'js/data.js', 'js/draw.js', 'js/i18n.js',
+  'js/lang/en.js', 'js/lang/ja.js', 'js/lang/ko.js', 'js/lang/vi.js', 'js/lang/th.js', 'js/lang/yue.js',
   'js/chapters/prologue.js', 'js/chapters/ch1.js', 'js/chapters/ch2.js', 'js/chapters/ch3.js', 'js/chapters/ch4.js', 'js/chapters/ch5.js', 'js/chapters/finale.js',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png',
   'audio/namo_1.mp3', 'audio/namo_2.mp3', 'audio/namo_3.mp3', 'audio/namo_4.mp3',

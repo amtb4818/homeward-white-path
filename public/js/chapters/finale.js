@@ -4,6 +4,7 @@
 import { TILE } from '../engine.js';
 import { chibi, vaidehi } from '../draw.js';
 import { dialog, hint, toast, grant, openCard } from '../ui.js';
+import { t as tr, q } from '../i18n.js';
 import { MAP as CITY, drawCityTile } from './prologue.js';
 import * as A from '../audio.js';
 
@@ -88,7 +89,7 @@ export function createFinale() {
     e.block = []; E.refreshBlocks();
     walkers[pp.id] = { y: e.y, y0: e.y, a: 1 };
     A.sfx('grant');
-    toast(`王舍城亮了一些（${st.guided.length}／4）`);
+    toast(tr('王舍城亮了一些（{n}／4）', { n: st.guided.length }));
     if (st.guided.length === 4) setTimeout(() => finish(), 4200);
   }
 
@@ -104,13 +105,13 @@ export function createFinale() {
       await grant(['chaoriyue'], 'finale');
       glory = 0.01;
       await new Promise(r => setTimeout(r, 2500));
-      await openCard(`<div class="tag">歸 去 來</div>
+      await openCard(`<div class="tag">${tr('歸 去 來')}</div>
         <div class="light-orb"></div>
-        <h3>南無阿彌陀佛</h3>
-        <p class="quote">歸去來，魔鄉不可停，曠劫來流轉，六道盡皆經。<small>善導大師《觀經四帖疏・定善義》</small></p>
-        <p class="quote">願以此功德，平等施一切，<br>同發菩提心，往生安樂國。<small>善導大師《觀經四帖疏・玄義分》</small></p>
-        <p style="text-align:center;font-size:calc(var(--fs) - 2px);color:#8a6a3a">感謝你走完這段白道之旅。</p>
-        <div class="row"><button class="btn" data-close="ok">南無阿彌陀佛</button></div>`);
+        <h3>${tr('南無阿彌陀佛')}</h3>
+        ${q('歸去來，魔鄉不可停，曠劫來流轉，六道盡皆經。', '善導大師《觀經四帖疏・定善義》')}
+        ${q('願以此功德，平等施一切，<br>同發菩提心，往生安樂國。', '善導大師《觀經四帖疏・玄義分》')}
+        <p style="text-align:center;font-size:calc(var(--fs) - 2px);color:#8a6a3a">${tr('感謝你走完這段白道之旅。')}</p>
+        <div class="row"><button class="btn" data-close="ok">${tr('南無阿彌陀佛')}</button></div>`);
       E.complete('finale', ['chaoriyue'], ['finale']);
     } finally { E.interacting = false; }
   }

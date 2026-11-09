@@ -149,10 +149,10 @@ export function createCh3() {
       c.save(); c.globalAlpha = a;
       c.font = 'bold 15px "Noto Serif TC", serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
       const x = eng.W / 2 + shout.dx, y = eng.H - 214;
-      const w = c.measureText(shout.s).width + 24;
+      const ss = tr(shout.s), w = c.measureText(ss).width + 24;
       c.fillStyle = 'rgba(30,20,30,.82)'; c.strokeStyle = 'rgba(200,80,80,.6)'; c.lineWidth = 1.5;
       c.beginPath(); c.roundRect ? c.roundRect(x - w / 2, y - 16, w, 32, 14) : c.rect(x - w / 2, y - 16, w, 32); c.fill(); c.stroke();
-      c.fillStyle = '#f0c8c8'; c.fillText(shout.s, x, y + 1);
+      c.fillStyle = '#f0c8c8'; c.fillText(ss, x, y + 1);
       c.fillStyle = 'rgba(30,20,30,.82)'; c.beginPath(); c.moveTo(x - 6, y + 16); c.lineTo(x, y + 26); c.lineTo(x + 6, y + 16); c.fill();
       c.restore();
     },
