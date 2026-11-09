@@ -1,0 +1,14 @@
+{
+  "name": "homeward-white-path",
+  "version": "1.0.0",
+  "private": true,
+  "description": "歸去來：白道之旅 — 淨土宗 2D 闖關遊戲",
+  "scripts": {
+    "start": "node tools/serve.mjs 4321",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

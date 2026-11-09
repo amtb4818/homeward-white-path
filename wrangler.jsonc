@@ -1,0 +1,10 @@
+// Cloudflare 部署設定（與願恩寺相同做法）：一個 Worker 送出 public/ 的網頁檔案
+// 部署：npx wrangler deploy　（或在 Cloudflare 主控台匯入 GitHub 存放庫，部署指令同上）
+{
+  "$schema": "https://unpkg.com/wrangler@4/config-schema.json",
+  "name": "homeward-white-path",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public"
+  }
+}
