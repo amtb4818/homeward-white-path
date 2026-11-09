@@ -402,4 +402,8 @@ export default {
   "走到那裡": "Đi đến đó",
   "本章法語": "Pháp ngữ của chương này",
   "全螢幕": "Toàn màn hình",
+
+  // ---- 章節選單 ----
+  "圓滿": "Viên mãn",
+  "已圓滿 {n}／{m}": "Đã viên mãn {n}/{m}",
 };

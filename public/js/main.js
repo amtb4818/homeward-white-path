@@ -67,10 +67,13 @@ function renderChapters() {
   $('chapter-list').innerHTML = CHAPTERS.map(ch => {
     const done = S.done[ch.id], prog = S.progress[ch.id];
     const stt = t(!ch.playable ? '籌備中' : done ? '已圓滿' : prog ? '進行中' : ch.star ? '招牌關' : '可遊玩');
-    return `<button class="ch-card ${done ? 'done' : ''} ${ch.playable ? '' : 'soon'}" data-id="${ch.id}">
-      <span class="num">${chBadge(ch)}</span><span class="st">${stt}</span>
+    return `<button class="ch-card ${done ? 'done' : ''} ${prog && !done ? 'going' : ''} ${ch.playable ? '' : 'soon'}" data-id="${ch.id}" style="--c:${CH_COLOR[ch.id] || '#c98a2b'}">
+      <svg class="em" viewBox="0 0 100 100" aria-hidden="true"><use href="#em-${ch.id}"/></svg>
+      <span class="num">${chBadge(ch)}</span>${done ? `<span class="seal">${t('圓滿')}</span>` : `<span class="st">${stt}</span>`}
       <b>${t(ch.name)}</b><small>${t(ch.desc)}</small></button>`;
-  }).join('') + `<p style="text-align:center;font-size:13px;color:#8a6a3a;margin:6px 0">${t('今日稱名 {a}　・　累計 {b}', { a: S.chant.today, b: S.chant.total })}</p>`;
+  }).join('') + `<p class="cs-foot">${t('今日稱名 {a}　・　累計 {b}', { a: `<b>${S.chant.today}</b>`, b: S.chant.total })}</p>`;
+  const nDone = CHAPTERS.filter(c => S.done[c.id]).length;
+  $('cs-progress').innerHTML = `<span style="--p:${nDone / CHAPTERS.length}"></span>${t('已圓滿 {n}／{m}', { n: nDone, m: CHAPTERS.length })}`;
   $('chapter-list').querySelectorAll('.ch-card').forEach(b => b.addEventListener('click', () => {
     A.sfx('tap');
     const ch = CHAPTERS.find(c => c.id === b.dataset.id);
@@ -85,6 +88,7 @@ function startChapter(id) {
   const state = S.done[id] ? null : S.progress[id];
   eng.load(current, state);
   $('chapter-label').textContent = t(current.name);
+  showIntro(ch);
   showScreen('play');
   A.playBgm(current.theme);
   current.enter && current.enter(eng);
@@ -120,6 +124,18 @@ const NEXT = {
   ch5: { id: 'finale', text: '你已領受無邊、無對、難思、無稱光。該回娑婆了，那裡還有人在等。' },
 };
 const chIndex = ch => CHAPTERS.indexOf(ch);
+// 每章的代表色（章節卡左側色帶、徽記）
+const CH_COLOR = { prologue: '#8c7a9e', ch1: '#4f8a63', ch2: '#3f7aa0', ch3: '#c0583a', ch4: '#d4809c', ch5: '#c9952e', finale: '#d9774a' };
+// 進入章節時的標題（純 CSS 淡入淡出，不佔畫布效能）
+let introTimer;
+function showIntro(ch) {
+  const el = $('chapter-intro');
+  el.querySelector('small').textContent = chTitle(ch, true);
+  el.querySelector('b').textContent = t(ch.name).split(/——| — /).pop();
+  el.style.setProperty('--c', CH_COLOR[ch.id] || '#c98a2b');
+  el.classList.add('hidden'); void el.offsetWidth; el.classList.remove('hidden');
+  clearTimeout(introTimer); introTimer = setTimeout(() => el.classList.add('hidden'), 3200);
+}
 const chTitle = (ch, plain) => { const n = ch.num === '序' ? t('序章') : ch.num === '終' ? t('終章') : t('第{n}章', { n: LANG === 'zh' || LANG === 'yue' ? ch.num : chIndex(ch) }); return plain ? n : spaced(n); };
 const chBadge = ch => (LANG === 'zh' || LANG === 'yue' || ch.num === '序' || ch.num === '終') ? t(ch.num) : chIndex(ch);
 
@@ -277,6 +293,14 @@ function layoutSide() {
   if (on && !was) renderSide();
 }
 addEventListener('resize', layoutSide);
+// 標題圖依畫面比例取景：地平線固定在畫面約 56% 高的位置（只在尺寸改變時算一次）
+function frameTitle() {
+  const sc = $('title-scene'), st = $('stage');
+  if (!sc || !st.clientWidth) return;
+  const H = 390 * st.clientHeight / st.clientWidth;
+  sc.setAttribute('viewBox', `0 ${(470 - 0.56 * H).toFixed(1)} 390 ${H.toFixed(1)}`);
+}
+addEventListener('resize', frameTitle); frameTitle();
 layoutSide(); renderSide();
 $('overlay').addEventListener('pointerup', e => { if (e.target.id === 'overlay') closeCard('bg'); });
 

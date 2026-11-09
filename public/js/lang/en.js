@@ -402,4 +402,8 @@ export default {
   "走到那裡": "Walk there",
   "本章法語": "Dharma words of this chapter",
   "全螢幕": "Full screen",
+
+  // ---- 章節選單 ----
+  "圓滿": "Done",
+  "已圓滿 {n}／{m}": "Completed {n}/{m}",
 };

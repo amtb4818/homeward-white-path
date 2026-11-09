@@ -14,6 +14,7 @@
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/beauty.css">
 </head>
 <body>
 <aside id="side-left" class="side-deco"><div class="side-panel" id="panel-left"></div></aside>
@@ -46,6 +47,7 @@
   <div id="hint" class="hidden"></div>
   <div id="toast" class="hidden"></div>
   <div id="call-text" class="hidden"></div>
+  <div id="chapter-intro" class="hidden" aria-hidden="true"><small></small><b></b></div>
 
   <!-- 對話框 -->
   <div id="dialog" class="hidden" role="dialog" aria-live="polite">
@@ -61,6 +63,60 @@
   <!-- 標題畫面 -->
   <section id="title-screen" class="screen">
     <div class="title-glow"></div>
+    <!-- 二河白道：靜態圖，只用 CSS 做極輕的動畫，不佔遊戲效能 -->
+    <svg class="title-scene" id="title-scene" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="tFire" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e2582e"/><stop offset=".55" stop-color="#b8402a" stop-opacity=".85"/><stop offset="1" stop-color="#f2b25b" stop-opacity=".35"/></linearGradient>
+        <linearGradient id="tWater" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#1f4f7a"/><stop offset=".55" stop-color="#2c6a94" stop-opacity=".85"/><stop offset="1" stop-color="#9fd0e8" stop-opacity=".35"/></linearGradient>
+        <linearGradient id="tPath" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fffdf4"/><stop offset=".7" stop-color="#fff3cf"/><stop offset="1" stop-color="#ffe7a0"/></linearGradient>
+        <linearGradient id="tGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2f48"/><stop offset="1" stop-color="#0f1320"/></linearGradient>
+        <linearGradient id="tSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121833"/><stop offset=".45" stop-color="#2c2c56"/><stop offset=".75" stop-color="#7a5470"/><stop offset=".93" stop-color="#e2a06c"/><stop offset="1" stop-color="#f8d898"/></linearGradient>
+        <radialGradient id="tHalo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff8dc"/><stop offset=".35" stop-color="#ffd98a" stop-opacity=".7"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient>
+        <radialGradient id="tLamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6d6"/><stop offset=".4" stop-color="#ffd27a" stop-opacity=".6"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>
+        <!-- 章節徽記 -->
+    <g id="em-prologue"><path d="M20 82V44l30-22 30 22v38z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M40 82V58h20v24" fill="none" stroke="currentColor" stroke-width="5"/><path d="M12 46 50 16l38 30" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></g>
+    <g id="em-ch1"><path d="M32 86V34q18-16 36 0v52z" fill="none" stroke="currentColor" stroke-width="5"/><path d="M42 44h16M42 54h16M42 64h16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M22 88h56" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></g>
+    <g id="em-ch2"><path d="M14 64h72l-10 16H24z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M50 62V18M50 22q22 16 4 36" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M10 90q10-6 20 0t20 0 20 0 20 0" fill="none" stroke="currentColor" stroke-width="4"/></g>
+    <g id="em-ch3"><path d="M47 14 40 88M53 14l7 74" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M18 80q4-14 0-24 10 8 6 24zM28 50q3-10 0-16 7 6 4 16z" fill="currentColor"/><path d="M68 56q6-4 12 0t12 0M66 76q7-4 14 0t14 0" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></g>
+    <g id="em-ch4"><path d="M50 18c12 16 13 34 0 56-13-22-12-40 0-56z" fill="none" stroke="currentColor" stroke-width="5"/><path d="M50 74c-16-8-26-20-28-38 14 6 22 18 28 38zM50 74c16-8 26-20 28-38-14 6-22 18-28 38z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><path d="M18 86h64" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></g>
+    <g id="em-ch5"><path d="M14 58q20-30 44-10 14-16 28-6-12 4-16 16-10 26-40 18z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><circle cx="66" cy="44" r="3.5" fill="currentColor"/><path d="M30 78 22 90M44 80l-4 12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></g>
+    <g id="em-finale"><circle cx="50" cy="36" r="14" fill="none" stroke="currentColor" stroke-width="5"/><path d="M50 10V4M74 36h6M20 36h6M68 18l4-4M32 18l-4-4" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M14 88V66h14v-8h14v8h16V56h14v10h14v22z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></g>
+  </defs>
+      <rect x="0" y="-500" width="390" height="500" fill="#121833"/><rect x="0" y="0" width="390" height="470" fill="url(#tSky)"/>
+      <g fill="#fff6dc"><circle cx="40" cy="60" r="1"/><circle cx="110" cy="130" r=".8"/><circle cx="330" cy="80" r="1.2"/><circle cx="270" cy="170" r=".8"/><circle cx="60" cy="220" r=".7"/><circle cx="360" cy="240" r=".9"/><circle cx="200" cy="40" r=".8"/></g>
+      <!-- 西方的光（極樂） -->
+      <circle class="ts-halo" cx="195" cy="472" r="120" fill="url(#tHalo)"/>
+      <!-- 遠山 -->
+      <path d="M0 470 L0 418 Q30 400 58 412 Q92 380 126 404 Q150 392 170 452 L220 452 Q240 390 268 402 Q300 372 330 398 Q360 384 390 404 L390 470 Z" fill="#3a3f62" opacity=".75"/>
+      <path d="M0 470 L0 440 Q40 426 80 440 Q120 428 160 462 L230 462 Q270 430 310 442 Q350 430 390 446 L390 470 Z" fill="#2b3050"/>
+      <!-- 大地 -->
+      <rect x="0" y="468" width="390" height="376" fill="url(#tGround)"/><rect x="0" y="843" width="390" height="500" fill="#0f1320"/>
+      <!-- 南火河、北水河、中間的白道 -->
+      <polygon class="ts-fire" points="148,470 193,470 172,844 -130,844" fill="url(#tFire)"/>
+      <polygon class="ts-water" points="197,470 242,470 520,844 218,844" fill="url(#tWater)"/>
+      <g class="ts-flame" fill="#ffb15a" opacity=".55">
+        <path d="M40 800 q8 -26 2 -44 q16 18 10 44z"/><path d="M95 760 q6 -20 1 -34 q12 14 8 34z"/><path d="M140 700 q4 -14 1 -24 q8 10 5 24z"/><path d="M10 720 q6 -18 0 -30 q12 12 8 30z"/><path d="M160 600 q3 -10 0 -16 q6 6 4 16z"/>
+      </g>
+      <g class="ts-wave" fill="none" stroke="#bfe4f5" stroke-width="1.4" opacity=".45" stroke-linecap="round">
+        <path d="M250 800 q14 -6 28 0 t28 0"/><path d="M300 740 q12 -5 24 0 t24 0"/><path d="M236 690 q10 -4 20 0 t20 0"/><path d="M340 820 q14 -6 28 0"/><path d="M225 600 q6 -3 12 0 t12 0"/>
+      </g>
+      <polygon points="193,470 197,470 216,844 174,844" fill="url(#tPath)"/>
+      <!-- 小行者提燈 -->
+      <circle class="ts-lamp" cx="201" cy="566" r="26" fill="url(#tLamp)"/>
+      <g transform="translate(195 588) scale(.8)">
+        <ellipse cx="0" cy="2" rx="7" ry="2" fill="#000" opacity=".25"/>
+        <path d="M-6 0 Q-7 -14 0 -18 Q7 -14 6 0 Z" fill="#f4efe2"/>
+        <circle cx="0" cy="-22" r="5" fill="#f4efe2"/>
+        <path d="M4 -12 L9 -22" stroke="#6b4a2a" stroke-width="1.2"/>
+        <circle cx="9" cy="-23.5" r="2.6" fill="#ffe7a0"/>
+      </g>
+      <!-- 蓮花 -->
+      <g fill="#f3a6b8" opacity=".9">
+        <g transform="translate(46 836) scale(.9)"><path d="M0 -24 C8 -14 8 -4 0 6 C-8 -4 -8 -14 0 -24Z"/><path d="M0 6 C-10 2 -18 -6 -20 -16 C-10 -12 -4 -6 0 6Z" opacity=".8"/><path d="M0 6 C10 2 18 -6 20 -16 C10 -12 4 -6 0 6Z" opacity=".8"/></g>
+        <g transform="translate(344 832) scale(.75)"><path d="M0 -24 C8 -14 8 -4 0 6 C-8 -4 -8 -14 0 -24Z"/><path d="M0 6 C-10 2 -18 -6 -20 -16 C-10 -12 -4 -6 0 6Z" opacity=".8"/><path d="M0 6 C10 2 18 -6 20 -16 C10 -12 4 -6 0 6Z" opacity=".8"/></g>
+      </g>
+    </svg>
+    <div class="petals" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <h1>歸去來</h1>
     <h2>白道之旅</h2>
     <p class="title-sub">Homeward: The White Path</p>
@@ -72,7 +128,7 @@
 
   <!-- 章節選擇 -->
   <section id="chapter-screen" class="screen hidden">
-    <header><h2 data-i18n="向西之路">向西之路</h2><button id="btn-settings2" class="icon-btn" aria-label="設定" data-i18n-label="設定">⚙</button></header>
+    <header><div class="cs-head"><h2 data-i18n="向西之路">向西之路</h2><p id="cs-progress"></p></div><button id="btn-settings2" class="icon-btn" aria-label="設定" data-i18n-label="設定">⚙</button></header>
     <div id="chapter-list"></div>
   </section>
 </main>

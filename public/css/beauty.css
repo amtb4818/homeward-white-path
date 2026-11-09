@@ -1,0 +1,209 @@
+/* 美術加強層：只用 CSS／靜態 SVG。
+   原則：不加 backdrop-filter、不在畫布上多畫東西；動畫只動 transform / opacity（交給 GPU 合成，不拖慢遊戲）。 */
+
+:root {
+  --gold-hi: #ffe7a6;
+  --ink-brown: #4a2b00;
+  --line: rgba(201,138,43,.45);
+}
+
+/* ================= 標題畫面：二河白道 ================= */
+#title-screen {
+  background: #121833;
+  justify-content: flex-start;
+  padding-top: calc(var(--safe-t) + 11vh);
+  overflow: hidden;
+}
+.title-scene { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.title-glow { top: 26%; height: 50%; width: 120%; background: radial-gradient(circle, rgba(255,236,180,.55), transparent 62%); }
+.ts-halo { transform-origin: 195px 472px; animation: tsHalo 6s ease-in-out infinite; }
+@keyframes tsHalo { 50% { transform: scale(1.12); opacity: .85; } }
+.ts-lamp { animation: tsLamp 2.4s ease-in-out infinite; }
+@keyframes tsLamp { 50% { opacity: .65; } }
+.ts-flame { animation: tsFlame 1.6s ease-in-out infinite alternate; }
+@keyframes tsFlame { to { opacity: .25; } }
+.ts-wave { animation: tsWave 3s ease-in-out infinite alternate; }
+@keyframes tsWave { to { transform: translateX(6px); opacity: .2; } }
+
+/* 書法標題：金色漸層字 */
+#title-screen h1 {
+  font-size: clamp(60px, 18vw, 92px);
+  background: linear-gradient(180deg, #fffbea 10%, #ffe3a0 55%, #e2a64a 95%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-shadow: none; filter: drop-shadow(0 0 18px rgba(255,214,120,.55)) drop-shadow(0 3px 3px rgba(40,20,0,.45));
+}
+#title-screen h2 { color: var(--gold-hi); text-shadow: 0 2px 8px rgba(30,20,40,.6); }
+#title-screen h2::before, #title-screen h2::after {
+  content: ""; display: inline-block; vertical-align: middle; width: 34px; height: 1px; margin: 0 .5em;
+  background: linear-gradient(90deg, transparent, var(--gold-hi));
+}
+#title-screen h2::after { transform: scaleX(-1); margin-left: 0; }
+.title-sub { opacity: .8; color: #f6e6c8; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+.title-verse {
+  padding: 10px 18px; border-radius: 14px; margin-bottom: 0;
+  background: linear-gradient(rgba(20,22,40,.0), rgba(20,22,40,.28));
+  text-shadow: 0 1px 6px rgba(20,10,30,.7);
+}
+/* 按鈕放在大地上，靠下 */
+#btn-start { margin-top: auto; }
+#title-screen .title-note { margin-top: 14px; }
+#btn-lang { margin-bottom: 4vh; }
+.big-btn {
+  border: 0; padding: 15px 46px;
+  background:
+    linear-gradient(#fff3cf, #fff3cf) padding-box,
+    radial-gradient(circle at 50% 25%, #fff6da, #f2c35b 58%, #b97a22);
+  box-shadow: 0 0 0 1.5px rgba(255,243,207,.9), 0 0 0 5px rgba(242,195,91,.25), 0 0 34px rgba(242,195,91,.75), inset 0 -3px 8px rgba(120,60,0,.25);
+  background: radial-gradient(circle at 50% 25%, #fff6da, #f2c35b 58%, #b97a22);
+  animation: btnBreath 3.2s ease-in-out infinite;
+}
+@keyframes btnBreath { 50% { transform: scale(1.035); } }
+.big-btn:active { animation: none; transform: scale(.96); }
+.lang-btn { background: rgba(10,12,24,.35); border-color: rgba(255,230,170,.45); }
+
+/* 飄落的花瓣（6 片，只動 transform） */
+.petals { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.petals i {
+  position: absolute; top: -20px; width: 10px; height: 14px; border-radius: 80% 0 80% 0;
+  background: linear-gradient(135deg, #ffe0ea, #f3a6b8); opacity: .75;
+  animation: petal 14s linear infinite;
+}
+.petals i:nth-child(1) { left: 12%; animation-delay: 0s; }
+.petals i:nth-child(2) { left: 30%; animation-delay: -5s; animation-duration: 17s; transform: scale(.8); }
+.petals i:nth-child(3) { left: 52%; animation-delay: -9s; animation-duration: 13s; }
+.petals i:nth-child(4) { left: 70%; animation-delay: -2s; animation-duration: 19s; }
+.petals i:nth-child(5) { left: 86%; animation-delay: -11s; animation-duration: 15s; }
+.petals i:nth-child(6) { left: 42%; animation-delay: -7s; animation-duration: 21s; }
+@keyframes petal {
+  0% { transform: translate3d(0, 0, 0) rotate(0); }
+  50% { transform: translate3d(28px, 55vh, 0) rotate(200deg); }
+  100% { transform: translate3d(-10px, 110vh, 0) rotate(420deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .petals, .ts-halo, .ts-lamp, .ts-flame, .ts-wave, .big-btn { animation: none !important; }
+}
+
+/* ================= 章節選單：一路向西 ================= */
+#chapter-screen {
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(242,195,91,.35), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(243,166,184,.18), transparent 40%),
+    linear-gradient(#efe0bd, #f7eed8 35%, #fbf5e8);
+}
+.cs-head h2 { font-size: 26px !important; }
+#cs-progress { margin: 2px 0 0; font-size: 12.5px; color: #8a6a3a; display: flex; align-items: center; gap: 8px; }
+#cs-progress span { position: relative; display: inline-block; width: 90px; height: 5px; border-radius: 3px; background: rgba(160,110,50,.18); overflow: hidden; }
+#cs-progress span::after { content: ""; position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--p)); background: linear-gradient(90deg, #f2c35b, #c98a2b); border-radius: 3px; }
+#chapter-screen header { padding-bottom: 8px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+
+/* 卡片：左邊一條代表色、右下淡淡的徽記，左側連成一條「向西的路」 */
+.ch-card {
+  overflow: hidden; border: 0; padding: 14px 16px 14px 70px;
+  background: linear-gradient(105deg, #fffdf7, #fff8ea);
+  box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 0 0 1px rgba(201,160,90,.35), 0 4px 12px rgba(120,80,20,.08);
+  transition: transform .15s ease;
+}
+.ch-card:active { transform: scale(.985); }
+.ch-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--c); opacity: .85; }
+.ch-card .em { position: absolute; right: -6px; bottom: -10px; width: 86px; height: 86px; color: var(--c); opacity: .13; pointer-events: none; }
+.ch-card .num {
+  left: 16px; width: 40px; height: 40px; font-size: 16px; color: #fff;
+  background: radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--c) 55%, #fff), var(--c));
+  box-shadow: 0 0 0 3px #fffaf0, 0 0 0 4px color-mix(in srgb, var(--c) 45%, transparent);
+}
+.ch-card.done .num { background: radial-gradient(circle at 45% 40%, #fff6d6, var(--gold) 60%, var(--gold-deep)); color: #5b3000; box-shadow: 0 0 0 3px #fffaf0, 0 0 10px rgba(242,195,91,.8); }
+.ch-card b { color: var(--ink-brown); letter-spacing: .02em; }
+.ch-card small { position: relative; margin-top: 3px; }
+.ch-card .st { background: color-mix(in srgb, var(--c) 14%, #fff); color: color-mix(in srgb, var(--c) 80%, #000); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); }
+.ch-card.going .st { background: var(--c); color: #fff; }
+/* 已圓滿：朱紅印章 */
+.ch-card .seal {
+  position: absolute; right: 10px; top: 8px; padding: 2px 7px; font-family: var(--serif); font-size: 13px; font-weight: 700;
+  color: #b8322a; border: 2px solid #b8322a; border-radius: 5px; transform: rotate(-8deg); opacity: .85; letter-spacing: .1em;
+  background: rgba(255,255,255,.4);
+}
+.ch-card.done { background: linear-gradient(105deg, #fffaf0, #fff3d8); }
+.cs-foot { text-align: center; font-size: 13px; color: #8a6a3a; margin: 8px 0 4px; }
+.cs-foot b { color: var(--gold-deep); font-size: 16px; }
+
+/* ================= 卡片（領受、法語、設定…） ================= */
+#card {
+  border: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(242,195,91,.22), transparent 45%),
+    linear-gradient(var(--paper), var(--paper-2));
+  box-shadow: 0 0 0 1.5px var(--gold-deep), 0 0 0 5px rgba(251,245,232,.9), 0 0 0 6px rgba(201,138,43,.5), 0 14px 44px rgba(0,0,0,.55);
+}
+#card .tag { display: flex; align-items: center; justify-content: center; gap: 10px; }
+#card .tag::before, #card .tag::after { content: ""; flex: 0 1 46px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-deep)); }
+#card .tag::after { transform: scaleX(-1); }
+#card h3 { padding-bottom: 8px; margin-bottom: 8px; background: linear-gradient(90deg, transparent, var(--line), transparent) bottom / 70% 1px no-repeat; }
+#card .quote { border-left: 0; position: relative; padding: 12px 14px 10px 18px; background: linear-gradient(90deg, rgba(242,195,91,.22), rgba(242,195,91,.08)); }
+#card .quote::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 2px; background: linear-gradient(var(--gold), var(--gold-deep)); }
+.light-orb { box-shadow: 0 0 40px rgba(255,214,120,.6); }
+.btn { border-radius: 14px; background: linear-gradient(#f0c062, #c98a2b); box-shadow: 0 3px 0 #8a5a12, inset 0 1px 0 rgba(255,255,255,.45); letter-spacing: .04em; }
+.btn.ghost { background: #fffdf6; box-shadow: inset 0 0 0 1px rgba(201,138,43,.25); }
+.item { background: #fffdf7; border-color: #ead9b2; box-shadow: 0 1px 2px rgba(120,80,20,.06); }
+.seg button { transition: background .15s; }
+.seg button.on { background: linear-gradient(#fff6dc, #ffe9b3); box-shadow: 0 0 0 1px var(--gold-deep) inset; }
+#overlay { background: radial-gradient(circle at 50% 40%, rgba(20,22,40,.45), rgba(6,8,16,.72)); }
+
+/* ================= 遊戲中的介面 ================= */
+/* 暗角：固定的一層漸層，蓋在畫布上，不重畫 */
+#stage::after {
+  content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  background: radial-gradient(ellipse 85% 75% at 50% 48%, transparent 58%, rgba(8,6,16,.42) 100%);
+}
+.lights-row, .icon-btn { background: linear-gradient(rgba(30,34,52,.78), rgba(16,18,30,.78)); box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+#chapter-label { text-shadow: 0 1px 4px rgba(0,0,0,.9); }
+.chant-count b { text-shadow: 0 0 8px rgba(242,195,91,.6); }
+
+/* 稱名按鈕：外圈慢慢轉的光環（只轉 transform） */
+#btn-chant { overflow: visible; }
+#btn-chant::before {
+  content: ""; position: absolute; inset: -9px; border-radius: 50%; pointer-events: none;
+  border: 1.5px dashed rgba(255,232,170,.7);
+  animation: halo 18s linear infinite;
+}
+@keyframes halo { to { transform: rotate(360deg); } }
+
+#hint { border: 0; background: linear-gradient(rgba(253,249,238,.97), rgba(246,236,212,.97)); box-shadow: 0 0 0 1px var(--gold), 0 0 0 4px rgba(251,245,232,.5), 0 6px 20px rgba(0,0,0,.4); }
+#toast { background: linear-gradient(rgba(44,32,12,.9), rgba(26,18,6,.9)); box-shadow: 0 0 0 1px rgba(242,195,91,.6), 0 4px 16px rgba(0,0,0,.4); }
+
+/* 對話卷軸：說話者印章更像朱印 */
+#dlg-name { background: linear-gradient(#c4443a, #9e2c24); box-shadow: inset 0 0 0 1.5px rgba(255,240,220,.6), 0 1px 3px rgba(80,0,0,.35); }
+#dialog { box-shadow: 0 10px 30px rgba(0,0,0,.5), inset 0 0 0 1px rgba(160,110,50,.35), inset 0 0 30px rgba(160,110,50,.2); }
+#dlg-text.sutra { color: #7a3f00; }
+
+/* 章節開場標題 */
+#chapter-intro {
+  position: absolute; left: 0; right: 0; top: 30%; z-index: 9; pointer-events: none; text-align: center;
+  font-family: var(--serif); color: #fff6dc;
+  animation: intro 3.2s ease forwards;
+}
+#chapter-intro small { display: block; font-size: 14px; letter-spacing: .4em; color: var(--gold-hi); opacity: .9; }
+#chapter-intro b {
+  display: inline-block; margin-top: 6px; padding: 8px 26px; font-size: 28px; letter-spacing: .12em; font-weight: 700;
+  text-shadow: 0 0 18px rgba(255,214,120,.7), 0 2px 6px rgba(0,0,0,.8);
+  background: radial-gradient(ellipse at center, rgba(10,8,20,.55), transparent 70%);
+}
+#chapter-intro b::after {
+  content: ""; display: block; height: 2px; margin: 8px auto 0; width: 60%;
+  background: linear-gradient(90deg, transparent, var(--c), transparent);
+}
+html:not([lang^="zh"]) #chapter-intro small, html:not([lang^="zh"]) #chapter-intro b { letter-spacing: .04em; }
+html:not([lang^="zh"]) #chapter-intro b { font-size: 24px; }
+@keyframes intro { 0% { opacity: 0; transform: translateY(10px); } 15%, 75% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-6px); } }
+
+/* 大螢幕兩側欄：跟主畫面同一套金色裝飾 */
+.side-panel section { box-shadow: inset 0 1px 0 rgba(255,236,190,.08); }
+/* 標題頁收緊：所有元素都放得進一個手機畫面 */
+#title-screen { padding-top: calc(var(--safe-t) + 7vh); padding-bottom: calc(var(--safe-b) + 14px); }
+#title-screen h1 { font-size: clamp(56px, 16vw, 84px); }
+.title-sub { margin-bottom: 14px; }
+.title-verse { background: none; padding: 6px 12px; }
+#title-screen .title-note { margin-top: 10px; padding: 4px 12px; border-radius: 12px; background: rgba(10,12,24,.55); opacity: 1; color: #f3e4c4; }
+#btn-lang { margin: 10px 0 0; background: rgba(10,12,24,.55); }
+@media (max-height: 640px) { #title-screen h1 { font-size: 52px; } .title-sub { margin-bottom: 6px; } .title-verse { font-size: 16px; } }
+#title-screen > :not(.title-scene):not(.petals):not(.title-glow) { position: relative; }
+.ch-card { flex: none; }
