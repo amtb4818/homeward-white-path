@@ -1,5 +1,5 @@
 // 離線快取：第二次開啟不需網路
-const CACHE = 'homeward-v12';
+const CACHE = 'homeward-v13';
 const FILES = [
   './', 'index.html', 'css/style.css', 'manifest.webmanifest',
   'js/main.js', 'js/engine.js', 'js/ui.js', 'js/audio.js', 'js/save.js', 'js/data.js', 'js/draw.js', 'js/i18n.js',

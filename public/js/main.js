@@ -46,15 +46,16 @@ applySettings();
 
 // ---------- HUD ----------
 const lightsRow = $('btn-lights');
-function renderLights() { lightsRow.innerHTML = LIGHTS.map(l => `<i class="${S.lights.includes(l.id) ? 'on' : ''}" title="${t(l.name)}"></i>`).join(''); }
+function renderLights() { lightsRow.innerHTML = LIGHTS.map(l => `<i class="${S.lights.includes(l.id) ? 'on' : ''}" title="${t(l.name)}"></i>`).join(''); renderSide(); }
 renderLights();
-const renderCount = () => { $('chant-today').textContent = S.chant.today; };
+const renderCount = () => { $('chant-today').textContent = S.chant.today; const a = $('side-count'); if (a) a.innerHTML = sideCount(); };
 renderCount();
 eng.hooks.chant = () => { SV.addChant(); renderCount(); dirty = true; };
-eng.grantSutra = id => { SV.grantSutra(id); SV.save(); };
+eng.grantSutra = id => { SV.grantSutra(id); SV.save(); renderSide(); };
 
 // ---------- 章節 ----------
 function showScreen(name) {
+  setTimeout(renderSide, 0);
   $('title-screen').classList.toggle('hidden', name !== 'title');
   $('chapter-screen').classList.toggle('hidden', name !== 'chapters');
   const playing = name === 'play', custom = !!(current && current.custom);
@@ -233,6 +234,50 @@ function openLangPicker() {
   });
 }
 $('btn-lang').addEventListener('click', openLangPicker);
+
+// ---------- 電腦、平板橫放：兩側資訊欄 ----------
+function sideCount() { return t('今日稱名 {a}　・　累計 {b}', { a: `<b>${S.chant.today}</b>`, b: S.chant.total }); }
+function renderSide() {
+  const L = $('panel-left'), R = $('panel-right');
+  if (!L || !document.documentElement.classList.contains('has-side')) return;
+  const ch = current && CHAPTERS.find(c => c.id === current.id);
+  L.innerHTML = `
+    <div class="sp-title"><b>${t('歸去來')}</b><span>${t('白道之旅')}</span></div>
+    <section><h4>${ch ? t('目前所在') : t('向西之路')}</h4>
+      ${ch ? `<p class="sp-ch">${chTitle(ch, true)}<br><b>${t(ch.name)}</b></p><p class="sp-desc">${t(ch.desc)}</p>`
+           : `<p class="sp-desc">${t('淨土宗佛教遊戲——稱念南無阿彌陀佛，乘佛願力，一路向西回歸極樂故鄉。')}</p>`}
+      <p class="sp-count" id="side-count">${sideCount()}</p></section>
+    <section><h4>${t('阿彌陀佛十二光')}</h4>
+      <ul class="sp-lights">${LIGHTS.map(l => `<li class="${S.lights.includes(l.id) ? 'on' : ''}"><i></i>${t(l.name)}</li>`).join('')}</ul></section>`;
+  const heard = ch ? ch.sutras.filter(id => S.sutras.includes(id)) : [];
+  R.innerHTML = `
+    <section><h4>${t('電腦操作')}</h4>
+      <dl class="sp-keys">
+        <dt>W A S D ／ ← ↑ → ↓</dt><dd>${t('移動')}</dd>
+        <dt>${t('空白鍵')}</dt><dd>${t('稱念「南無阿彌陀佛」')}</dd>
+        <dt>Enter</dt><dd>${t('說話、下一句')}</dd>
+        <dt>Esc</dt><dd>${t('關閉卡片')}</dd>
+        <dt>${t('滑鼠點擊')}</dt><dd>${t('走到那裡')}</dd>
+      </dl></section>
+    ${ch ? `<section><h4>${t('本章法語')}</h4>${heard.length ? heard.map(id => { const s = SUTRAS[id], g = gloss(s.text); return `<p class="sp-sutra"><span lang="zh-Hant">${s.text}</span>${g ? `<em>${g}</em>` : ''}<small>${t(s.src)}</small></p>`; }).join('') : `<p class="sp-desc">${t('（尚未聽聞）')}</p>`}</section>` : ''}
+    <section class="sp-btns">
+      <button id="sp-lang">🌐 ${(LANGS.find(l => l[0] === LANG) || [])[1] || ''}</button>
+      ${document.fullscreenEnabled ? `<button id="sp-full">⛶ ${t('全螢幕')}</button>` : ''}
+    </section>`;
+  $('sp-lang').addEventListener('click', openLangPicker);
+  const fb = $('sp-full');
+  if (fb) fb.addEventListener('click', () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); });
+}
+function layoutSide() {
+  const side = (innerWidth - $('stage').offsetWidth) / 2;
+  const on = side >= 180 && innerHeight >= 520;
+  document.documentElement.classList.toggle("side-narrow", on && side < 260);
+  const was = document.documentElement.classList.contains('has-side');
+  document.documentElement.classList.toggle('has-side', on);
+  if (on && !was) renderSide();
+}
+addEventListener('resize', layoutSide);
+layoutSide(); renderSide();
 $('overlay').addEventListener('pointerup', e => { if (e.target.id === 'overlay') closeCard('bg'); });
 
 // ---------- 開場 ----------

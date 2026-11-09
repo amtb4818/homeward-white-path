@@ -77,7 +77,7 @@ export function createCh5() {
   let fl = null;
   const FLY_T = 26, OFFER_T = 7;
   function startFlight() {
-    fl = { t: 0, x: 180, tx: null, got: 0, flowers: [], clouds: Array.from({ length: 9 }, () => ({ x: Math.random() * 360, y: Math.random() * 800, s: 0.5 + Math.random() })), spawn: 0, offered: [] };
+    fl = { t: 0, x: E ? E.W / 2 : 180, tx: null, got: 0, flowers: [], clouds: Array.from({ length: 9 }, () => ({ x: Math.random() * 520, y: Math.random() * 800, s: 0.5 + Math.random() })), spawn: 0, offered: [] };
     L.custom = true;
     hint('左右移動，把飄落的妙華收進衣裓。<br><small>（按住畫面左右拖曳，或用方向鍵）</small>', 5000);
   }

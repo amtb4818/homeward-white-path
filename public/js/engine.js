@@ -5,7 +5,9 @@ import { t as tr } from './i18n.js';
 import { traveler, fogPuff } from './draw.js';
 
 export const TILE = 36;
-const VIEW_W = 360;
+const VIEW_W = 360;      // 手機：畫面寬固定 360 世界單位
+const VIEW_H = 640;      // 平板、電腦：以高度 640 為準，畫面變寬時看得到更多地圖
+const MAX_W = 520;       // 最寬不超過（地圖寬 13 格 = 468）
 const SPEED = 88;
 
 function radialSprite(size, stops) {
@@ -46,7 +48,10 @@ export class Engine {
   resize() {
     const r = this.cv.getBoundingClientRect();
     if (!r.width) return;
-    this.W = VIEW_W; this.scale = r.width / VIEW_W; this.H = r.height / this.scale;
+    let scale = r.height / VIEW_H, W = r.width / scale;
+    if (W < VIEW_W) { W = VIEW_W; scale = r.width / VIEW_W; }
+    if (W > MAX_W) { W = MAX_W; scale = r.width / MAX_W; }
+    this.W = W; this.scale = scale; this.H = r.height / scale;
     this.dpr = Math.min(devicePixelRatio || 1, 2);
     this.cv.width = Math.round(r.width * this.dpr); this.cv.height = Math.round(r.height * this.dpr);
     this.ds = 0.5;

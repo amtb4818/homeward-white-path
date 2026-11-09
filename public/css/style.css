@@ -319,3 +319,73 @@ html:not([lang^="zh"]) .big-btn { letter-spacing: .03em; white-space: nowrap; fo
 html:not([lang^="zh"]) .screen header h2 { letter-spacing: .03em; }
 html:not([lang^="zh"]) #chapter-screen h2 { letter-spacing: .03em; }
 html:not([lang^="zh"]) .ch-card b { padding-right: 0; margin-top: 16px; }
+
+/* ---------- 平板、電腦版面 ---------- */
+/* 舞台最寬到 13:16（世界寬 520 × 高 640），平板直放可看見整張地圖的寬度 */
+:root { --stage-w: min(100vw, calc(100vh * 13 / 16)); }
+@supports (height: 100dvh) { :root { --stage-w: min(100vw, calc(100dvh * 13 / 16)); } }
+#stage { width: var(--stage-w); }
+@media (max-aspect-ratio: 13/16) { #stage { width: 100vw; } }
+
+/* 大螢幕：字、卡片、對話框跟著放大，但不要拉得太長 */
+@media (min-width: 700px) and (min-height: 820px) {
+  :root { --fs: 20px; }
+  #card { max-width: 480px; padding: 22px 22px 20px; }
+  #dialog { max-width: 640px; margin: 0 auto; }
+  #hint { max-width: 440px; }
+  #btn-chant { width: 108px; height: 108px; }
+  #btn-chant span { font-size: 17px; }
+  .lights-row { grid-template-columns: repeat(6, 14px); }
+  .lights-row i { width: 14px; height: 14px; }
+  #chapter-label { font-size: 15px; }
+  .chant-count { font-size: 17px; }
+  .icon-btn { width: 46px; height: 46px; font-size: 22px; }
+}
+@media (min-width: 1000px) and (min-height: 1000px) { :root { --fs: 22px; } }
+
+/* 兩側資訊欄（橫放平板、電腦） */
+.side-deco { width: calc((100vw - var(--stage-w)) / 2); }
+.side-panel { display: none; }
+html.has-side .side-panel {
+  display: flex; flex-direction: column; justify-content: center; gap: 18px;
+  position: absolute; inset: 0; margin: 0 auto; max-width: 340px; padding: 28px 22px;
+  overflow-y: auto; color: #e9dcbc; font-size: 15px; line-height: 1.6;
+  user-select: text; -webkit-user-select: text; touch-action: pan-y;
+}
+.side-panel section { background: rgba(10,14,24,.35); border: 1px solid rgba(242,195,91,.22); border-radius: 14px; padding: 12px 16px; }
+.side-panel h4 { margin: 0 0 6px; font-family: var(--serif); font-size: 15px; color: var(--gold); letter-spacing: .12em; font-weight: 600; }
+html:not([lang^="zh"]) .side-panel h4 { letter-spacing: .02em; }
+.side-panel p { margin: 4px 0; }
+.sp-title { text-align: center; font-family: var(--serif); color: #fff1c4; text-shadow: 0 0 18px rgba(242,195,91,.5); }
+.sp-title b { display: block; font-size: 40px; letter-spacing: .2em; line-height: 1.2; }
+.sp-title span { font-size: 18px; color: var(--gold); letter-spacing: .3em; }
+html:not([lang^="zh"]) .sp-title b { font-size: 26px; letter-spacing: .02em; }
+html:not([lang^="zh"]) .sp-title span { letter-spacing: .04em; }
+.sp-ch { font-family: var(--serif); color: #fff1c4; }
+.sp-ch b { font-size: 17px; }
+.sp-desc { font-size: 14px; color: #cbbd9b; }
+.sp-count { font-size: 14px; color: #cbbd9b; }
+.sp-count b { color: var(--gold); font-size: 18px; }
+.sp-lights { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 10px; font-size: 13px; }
+.sp-lights li { display: flex; align-items: center; gap: 6px; color: rgba(233,220,188,.45); }
+.sp-lights li i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.14); flex: none; }
+.sp-lights li.on { color: #fff1c4; }
+.sp-lights li.on i { background: radial-gradient(circle at 40% 35%, #fff6d6, var(--gold) 55%, var(--gold-deep)); box-shadow: 0 0 6px var(--gold); }
+.sp-keys { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 14px; }
+.sp-keys dt { color: var(--gold); font-family: ui-monospace, monospace; font-size: 12px; padding-top: 2px; white-space: nowrap; }
+.sp-keys dd { margin: 0; }
+.sp-sutra { font-family: var(--serif); color: #fff1c4; }
+.sp-sutra em { display: block; font-style: normal; font-family: var(--sans); font-size: 13px; color: #cbbd9b; margin-top: 2px; }
+.sp-sutra small { display: block; text-align: right; font-size: 12px; color: #a8987a; }
+.sp-btns { display: flex; gap: 8px; background: none !important; border: 0 !important; padding: 0 !important; }
+.sp-btns button { flex: 1; padding: 9px 10px; border-radius: 12px; background: rgba(255,255,255,.08); color: #fff1c4; border: 1px solid rgba(242,195,91,.4); font-size: 14px; }
+.sp-btns button:hover { background: rgba(242,195,91,.18); }
+/* 平板橫放：側欄較窄 */
+html.side-narrow .side-panel { padding: 16px 10px; gap: 12px; font-size: 13px; }
+html.side-narrow .side-panel section { padding: 10px 10px; }
+html.side-narrow .sp-title b { font-size: 30px; }
+html.side-narrow .sp-lights { grid-template-columns: 1fr; font-size: 12px; }
+html.side-narrow .sp-keys { grid-template-columns: 1fr; gap: 0 0; }
+html.side-narrow .sp-keys dd { margin-bottom: 4px; }
+html.side-narrow .sp-btns { flex-direction: column; }
+html.side-narrow .sp-desc, html.side-narrow .sp-count { font-size: 12.5px; }

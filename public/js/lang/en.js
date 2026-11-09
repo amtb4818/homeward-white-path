@@ -386,4 +386,20 @@ export default {
   "王舍城。天色灰濛濛的，街上的人都低著頭。": "Rājagṛha. The sky is grey, and everyone in the streets walks with their head down.",
   "城裡有四個人，各有一件放不下的心事。去聽聽他們吧。": "Four people in the city each carry a worry they can't let go of. Go and listen to them.",
   "按住畫面拖曳移動，或輕點想去的地方。<br>前方被「煩惱黑霧」擋住了。": "Press and drag to move, or tap where you want to go.<br>The way ahead is blocked by a “black mist of afflictions”.",
+
+  // ---- 電腦、平板兩側資訊欄 ----
+  "歸去來": "Homeward",
+  "白道之旅": "The White Path",
+  "目前所在": "Now",
+  "淨土宗佛教遊戲——稱念南無阿彌陀佛，乘佛願力，一路向西回歸極樂故鄉。": "A Pure Land Buddhist game — recite Namo Amitābha Buddha and, carried by the Buddha's vow, journey west to your true home in the Land of Bliss.",
+  "電腦操作": "Keyboard & mouse",
+  "移動": "Move",
+  "空白鍵": "Space",
+  "稱念「南無阿彌陀佛」": "Recite “Namo Amitābha Buddha”",
+  "說話、下一句": "Talk / next line",
+  "關閉卡片": "Close a card",
+  "滑鼠點擊": "Click",
+  "走到那裡": "Walk there",
+  "本章法語": "Dharma words of this chapter",
+  "全螢幕": "Full screen",
 };

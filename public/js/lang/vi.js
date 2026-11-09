@@ -386,4 +386,20 @@ export default {
   "王舍城。天色灰濛濛的，街上的人都低著頭。": "Thành Vương Xá. Trời xám xịt, người ngoài phố ai cũng cúi đầu.",
   "城裡有四個人，各有一件放不下的心事。去聽聽他們吧。": "Trong thành có bốn người, mỗi người mang một nỗi lòng không buông được. Hãy đi lắng nghe họ.",
   "按住畫面拖曳移動，或輕點想去的地方。<br>前方被「煩惱黑霧」擋住了。": "Giữ và kéo trên màn hình để di chuyển, hoặc chạm vào nơi muốn đến.<br>Phía trước bị “sương đen phiền não” chắn lối.",
+
+  // ---- 電腦、平板兩側資訊欄 ----
+  "歸去來": "Quy Khứ Lai",
+  "白道之旅": "Hành trình Đường Trắng",
+  "目前所在": "Đang ở",
+  "淨土宗佛教遊戲——稱念南無阿彌陀佛，乘佛願力，一路向西回歸極樂故鄉。": "Trò chơi Phật giáo Tịnh Độ tông — niệm Nam Mô A Di Đà Phật, nương nguyện lực của Phật, một đường về tây trở lại quê hương Cực Lạc.",
+  "電腦操作": "Điều khiển trên máy tính",
+  "移動": "Di chuyển",
+  "空白鍵": "Phím cách",
+  "稱念「南無阿彌陀佛」": "Niệm “Nam Mô A Di Đà Phật”",
+  "說話、下一句": "Nói · câu tiếp",
+  "關閉卡片": "Đóng thẻ",
+  "滑鼠點擊": "Nhấp chuột",
+  "走到那裡": "Đi đến đó",
+  "本章法語": "Pháp ngữ của chương này",
+  "全螢幕": "Toàn màn hình",
 };
