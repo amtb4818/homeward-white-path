@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#1d2433">
+<meta name="description" content="淨土宗佛教遊戲《歸去來：白道之旅》——稱念南無阿彌陀佛，乘佛願力，一路向西回歸極樂故鄉。">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="歸去來">
+<title>歸去來：白道之旅</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="side-left" class="side-deco" aria-hidden="true"></div>
+<div id="side-right" class="side-deco" aria-hidden="true"></div>
+
+<main id="stage">
+  <canvas id="game" aria-label="遊戲畫面"></canvas>
+
+  <!-- 上方 HUD -->
+  <div id="hud-top" class="hud hidden">
+    <button id="btn-lights" class="lights-row" aria-label="已領受的光"></button>
+    <div class="hud-mid">
+      <div id="chapter-label">序章</div>
+      <div class="chant-count">今日稱名 <b id="chant-today">0</b></div>
+    </div>
+    <button id="btn-menu" class="icon-btn" aria-label="選單">☰</button>
+  </div>
+
+  <!-- 下方操作 -->
+  <div id="joy-float" class="hidden"><i></i></div>
+  <div id="controls" class="hidden">
+    <div id="action-btns">
+      <button id="btn-chant" aria-label="南無阿彌陀佛">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#lotus"/></svg>
+        <span>南無<br>阿彌陀佛</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="hint" class="hidden"></div>
+  <div id="toast" class="hidden"></div>
+  <div id="call-text" class="hidden"></div>
+
+  <!-- 對話框 -->
+  <div id="dialog" class="hidden" role="dialog" aria-live="polite">
+    <div id="dlg-name"></div>
+    <div id="dlg-text"></div>
+    <div id="dlg-next">▼</div>
+  </div>
+
+  <!-- 通用卡片層（選擇、領受、法語、設定、章節） -->
+  <div id="overlay" class="hidden"><div id="card"></div></div>
+
+  <!-- 標題畫面 -->
+  <section id="title-screen" class="screen">
+    <div class="title-glow"></div>
+    <h1>歸去來</h1>
+    <h2>白道之旅</h2>
+    <p class="title-sub">Homeward: The White Path</p>
+    <p class="title-verse">歸去來，魔鄉不可停。<small>——善導大師《觀經四帖疏・定善義》</small></p>
+    <button id="btn-start" class="big-btn">踏上旅程</button>
+    <p class="title-note">建議開啟聲音・手機直式遊玩</p>
+  </section>
+
+  <!-- 章節選擇 -->
+  <section id="chapter-screen" class="screen hidden">
+    <header><h2>向西之路</h2><button id="btn-settings2" class="icon-btn" aria-label="設定">⚙</button></header>
+    <div id="chapter-list"></div>
+  </section>
+</main>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="lotus">
+      <path d="M50 18 C60 34 62 52 50 74 C38 52 40 34 50 18Z" />
+      <path d="M50 74 C34 66 22 52 20 34 C34 40 44 52 50 74Z" />
+      <path d="M50 74 C66 66 78 52 80 34 C66 40 56 52 50 74Z" />
+      <path d="M50 76 C30 76 14 68 8 56 C24 56 38 62 50 76Z" opacity=".8"/>
+      <path d="M50 76 C70 76 86 68 92 56 C76 56 62 62 50 76Z" opacity=".8"/>
+    </g>
+  </defs>
+</svg>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

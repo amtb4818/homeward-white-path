@@ -1,0 +1,17 @@
+{
+  "name": "歸去來：白道之旅",
+  "short_name": "歸去來",
+  "description": "稱念南無阿彌陀佛，乘佛願力，一路向西回歸極樂故鄉。",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1d2433",
+  "theme_color": "#1d2433",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
