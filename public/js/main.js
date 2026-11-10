@@ -15,6 +15,10 @@ import { createFinale } from './chapters/finale.js';
 
 const FACTORY = { prologue: createPrologue, ch1: createCh1, ch2: createCh2, ch3: createCh3, ch4: createCh4, ch5: createCh5, finale: createFinale };
 const $ = id => document.getElementById(id);
+// 願恩寺線上佛堂：法寶閣「走入經中」會帶 ?ch=章節 直接開到那一章；遊戲裡隨時可以回佛堂
+const TEMPLE = 'https://yuanen-temple.amtb713.workers.dev/';
+const goTemple = () => { saveProgress(); location.href = TEMPLE; };
+const ENTRY = new URLSearchParams(location.search).get('ch');
 const S = SV.load();
 await initLang(S.settings.lang || guessLang());
 const spaced = s => (LANG === 'zh' || LANG === 'yue') ? s.split('').join(' ') : s;   // 中文標籤字距
@@ -112,8 +116,9 @@ eng.complete = async (id, lights, sutras) => {
     <p>${t(NEXT[id] ? NEXT[id].text : '七章的白道之旅，到這裡圓滿了。')}</p>
     ${next ? '' : `<p style="text-align:center;font-family:var(--serif);font-size:calc(var(--fs) + 4px);color:#6b3d00">${t('南無阿彌陀佛')}</p>`}
     <div class="opts">${next ? `<button class="btn" data-close="next">${t('前往{c}：{n}', { c: chTitle(next, true), n: t(next.name).split(/——| — /).pop() })}</button>` : ''}
-    <button class="btn ${next ? 'ghost' : ''}" data-close="menu">${t('回到章節選單')}</button></div>`);
-  if (v === 'next' && next) { eng.unload(); startChapter(next.id); } else leaveChapter();
+    ${next ? '' : `<button class="btn" data-close="temple">${t('回到願恩寺')}</button>`}
+    <button class="btn ghost" data-close="menu">${t('回到章節選單')}</button></div>`);
+  if (v === 'next' && next) { eng.unload(); startChapter(next.id); } else if (v === 'temple') { leaveChapter(); goTemple(); } else leaveChapter();
 };
 const NEXT = {
   prologue: { id: 'ch1', text: '你已領受「無量光」。往西的路，正在前方。' },
@@ -198,6 +203,7 @@ function openSettings() {
     <div class="set-label">${t('音樂')}</div>${seg('music', [[true, '開'], [false, '關']])}
     <div class="set-label">${t('音效・佛號')}</div>${seg('sfx', [[true, '開'], [false, '關']])}
     <p style="font-size:13px;color:#8a6a3a">${t('手機：按住畫面拖曳移動，或輕點想去的地方；走到人物身上就會說話。<br>電腦：WASD／方向鍵移動、空白鍵稱名、Enter 說話、滑鼠點擊移動。')}</p>
+    <div class="row"><button class="btn ghost" data-close="temple">${t('回到願恩寺')}</button></div>
     <div class="row"><button class="btn ghost" id="btn-reset">${t('重新開始旅程')}</button><button class="btn" data-close="x">${t('完成')}</button></div>`, (el, close) => {
     el.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
       let v = b.dataset.v; if (v === 'true') v = true; if (v === 'false') v = false;
@@ -211,7 +217,7 @@ function openSettings() {
       if (b.dataset.sure) { SV.reset(); location.reload(); }
       else { b.dataset.sure = 1; b.textContent = t('確定清除進度？'); }
     });
-  });
+  }).then(v => { if (v === 'temple') goTemple(); });
 }
 
 function openMenu() {
@@ -223,7 +229,9 @@ function openMenu() {
       <button class="btn ghost" data-close="lights">${t('已領受的光')}</button>
       <button class="btn ghost" data-close="settings">${t('設定')}</button>
       <button class="btn ghost" data-close="chapters">${t('回到章節選單')}</button>
+      <button class="btn ghost" data-close="temple">${t('回到願恩寺')}</button>
     </div>`).then(v => {
+    if (v === 'temple') goTemple();
     if (v === 'codex') openCodex();
     if (v === 'lights') openLights();
     if (v === 'settings') openSettings();
@@ -305,10 +313,14 @@ layoutSide(); renderSide();
 $('overlay').addEventListener('pointerup', e => { if (e.target.id === 'overlay') closeCard('bg'); });
 
 // ---------- 開場 ----------
+const entryCh = CHAPTERS.find(c => c.id === ENTRY && c.playable);
+if (entryCh) $('btn-start').textContent = t('走入{n}', { n: t(entryCh.name).split(/——| — /).pop() });
 $('btn-start').addEventListener('click', () => {
   A.unlock(); applySettings();      // iPhone 需碰觸後才能發聲
   A.sfx('open'); A.playBgm('saha');
-  renderChapters(); showScreen('chapters');
+  renderChapters();
+  if (entryCh) { history.replaceState(null, '', location.pathname); startChapter(entryCh.id); }
+  else showScreen('chapters');
 });
 
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {

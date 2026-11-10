@@ -174,6 +174,8 @@ export default {
   "選 單": "Menu",
   "選單": "Menu",
   "繼續旅程": "Tiếp tục hành trình",
+  "回到願恩寺": "Về chùa Nguyện Ân",
+  "走入{n}": "Bước vào: {n}",
   "回到章節選單": "Về danh sách chương",
   "今日稱名": "Hôm nay",
   "今日稱名 {a}　・　累計 {b}": "Hôm nay niệm {a} · tổng cộng {b}",

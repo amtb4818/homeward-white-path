@@ -174,6 +174,8 @@ export default {
   "選 單": "Menu",
   "選單": "Menu",
   "繼續旅程": "Continue",
+  "回到願恩寺": "Back to Yuan’en Temple",
+  "走入{n}": "Enter: {n}",
   "回到章節選單": "Back to chapters",
   "今日稱名": "Today",
   "今日稱名 {a}　・　累計 {b}": "Recited today {a} · total {b}",
